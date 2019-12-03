@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Checker.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="FileNaming.cs" />
     <Compile Include="FolderSource.cs" />
     <Compile Include="IsoSource.cs" />
     <Compile Include="ISource.cs" />
