@@ -18,9 +18,12 @@ namespace S63Checker
             _isoStream = File.OpenRead(path);
             _cd = new CDReader(_isoStream, joliet: true, hideVersions: true);
 
+            Root = _cd.Root.ToString();
+
             Paths = _cd.GetFiles("\\", "*.*", SearchOption.AllDirectories);
         }
 
+        public string Root { get; }
         public string[] Paths { get; private set; }
             
         public Stream OpenRead(string path) => _cd.OpenFile(path, FileMode.Open);

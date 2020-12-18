@@ -16,6 +16,7 @@ namespace S63Checker
                 throw new DirectoryNotFoundException($"Cannot find directory {path}");
             }
 
+            Root = path;
             Paths = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
 
             ExchangeSetSanityChecks.ThrowIfNotExchangeSet(path, Paths);
@@ -27,6 +28,8 @@ namespace S63Checker
         }
 
         public string[] Paths { get; private set; }
+
+        public string Root { get; }
 
         public void Dispose()
         {
