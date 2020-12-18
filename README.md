@@ -8,4 +8,16 @@ The idea occurred to me during a CIRM ECDIS working group meeting where we were 
 - Could help in the creation of valid datasets.
 - Can help highlight strengths and weaknesses of proposed change. 
 
+## How to use it
+
+Unzip the release. The exe is not signed so you may get warnings from Windows or antivirus when you try to run it. 
+
+Run in cmd prompt with commands like this
+
+```
+s63checker e:\s63data\1.zip -verbose
+s63checker e:\s63data\avcs_dvd_2.iso
+s63checker e:\s63data\my_exchange_set
+```
+
 Andy Nibbs, Chersoft, December 2020. 
