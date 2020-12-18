@@ -43,9 +43,7 @@ namespace S63Checker
 
                     string line = reader.ReadLine();
 
-                    string hex = line.Trim('.').Replace(" ", "");
-
-                    _values.Add((SignaturePart)n, StringToByteArray(hex));
+                    _values.Add((SignaturePart)n, StringToByteArray(line));
 
                     Content[n * 2] = heading;
                     Content[(n * 2) + 1] = line;
@@ -55,12 +53,14 @@ namespace S63Checker
 
         public string[] Content = new string[16];
 
-        private static byte[] StringToByteArray(String hex)
+        public static byte[] StringToByteArray(String hex)
         {
-            int NumberChars = hex.Length;
+            string sanitised = hex.Trim('.').Replace(" ", "");
+
+            int NumberChars = sanitised.Length;
             byte[] bytes = new byte[NumberChars / 2];
             for (int i = 0; i < NumberChars; i += 2)
-                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+                bytes[i / 2] = Convert.ToByte(sanitised.Substring(i, 2), 16);
             return bytes;
         }
 

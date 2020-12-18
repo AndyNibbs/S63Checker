@@ -8,6 +8,8 @@ namespace S63Checker
     /// </summary>
     internal interface ISource : IDisposable
     {
+        string Root { get; }
+
         string[] Paths { get; }
 
         Stream OpenRead(string path);

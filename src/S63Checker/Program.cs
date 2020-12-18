@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace S63Checker
             var detail = OutputDetail.Basic;
             try
             {
-                if (args.Length < 1 || HasFlag("?", args) || HasFlag("usage", args))
+                if (args.Length == 0 || (args.Length==1 && args[0].Equals("-?")))
                 {
                     return Usage();
                 }
@@ -27,7 +28,7 @@ namespace S63Checker
                 ThrowIfInvalidPath(path);
 
                 var checker = new Checker(path, detail);
-                
+
                 bool checkPassed = checker.DoSignatureCheck();
 
                 return checkPassed ? 0 : 1;
@@ -36,10 +37,10 @@ namespace S63Checker
             {
                 switch (detail)
                 {
-                    case OutputDetail.Silent: 
+                    case OutputDetail.Silent:
                         break;
-                    case OutputDetail.Verbose: 
-                        Console.WriteLine(x.ToString()); 
+                    case OutputDetail.Verbose:
+                        Console.WriteLine(x.ToString());
                         break;
                     default:
                         Console.WriteLine(x.Message);
@@ -52,11 +53,18 @@ namespace S63Checker
 
         private static void ThrowIfInvalidPath(string path)
         {
-            if (Path.GetExtension(path).Equals(".iso"))
+            if (Path.GetExtension(path).Equals(".iso", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (!File.Exists(path))
                 {
                     throw new FileNotFoundException("Could not find .iso file", path);
+                }
+            }
+            else if (Path.GetExtension(path).Equals(".zip", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (!File.Exists(path))
+                {
+                    throw new FileNotFoundException("Could not find .zip file", path);
                 }
             }
             else
@@ -71,7 +79,7 @@ namespace S63Checker
         private static OutputDetail ChooseOutputDetail(bool silent, bool verbose)
         {
             if (silent)
-            { 
+            {
                 return OutputDetail.Silent;
             }
             if (verbose)
@@ -93,6 +101,7 @@ namespace S63Checker
 
         static int Usage()
         {
+            Console.WriteLine();
             Console.WriteLine("S63Checker <path to exchange set folder | path to .iso> [-verbose] [-silent] [-?]");
             Console.WriteLine();
             Console.WriteLine("Don't use verbose and silent together -- if you do it'll be silent");
@@ -102,6 +111,8 @@ namespace S63Checker
             Console.WriteLine("1 signature check failed");
             Console.WriteLine("2 error occurred");
             Console.WriteLine("3 this was displayed");
+            Console.WriteLine();
+            Console.WriteLine($"Version {Assembly.GetExecutingAssembly().GetName().Version}");
             return 3;
         }
     }
