@@ -27,7 +27,7 @@ namespace S63Checker
                 ThrowIfInvalidPath(path);
 
                 var checker = new Checker(path, detail);
-                
+
                 bool checkPassed = checker.DoSignatureCheck();
 
                 return checkPassed ? 0 : 1;
@@ -36,10 +36,10 @@ namespace S63Checker
             {
                 switch (detail)
                 {
-                    case OutputDetail.Silent: 
+                    case OutputDetail.Silent:
                         break;
-                    case OutputDetail.Verbose: 
-                        Console.WriteLine(x.ToString()); 
+                    case OutputDetail.Verbose:
+                        Console.WriteLine(x.ToString());
                         break;
                     default:
                         Console.WriteLine(x.Message);
@@ -52,11 +52,18 @@ namespace S63Checker
 
         private static void ThrowIfInvalidPath(string path)
         {
-            if (Path.GetExtension(path).Equals(".iso"))
+            if (Path.GetExtension(path).Equals(".iso", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (!File.Exists(path))
                 {
                     throw new FileNotFoundException("Could not find .iso file", path);
+                }
+            }
+            else if (Path.GetExtension(path).Equals(".zip", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (!File.Exists(path))
+                {
+                    throw new FileNotFoundException("Could not find .zip file", path);
                 }
             }
             else
@@ -71,7 +78,7 @@ namespace S63Checker
         private static OutputDetail ChooseOutputDetail(bool silent, bool verbose)
         {
             if (silent)
-            { 
+            {
                 return OutputDetail.Silent;
             }
             if (verbose)

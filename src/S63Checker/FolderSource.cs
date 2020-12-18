@@ -18,8 +18,6 @@ namespace S63Checker
 
             Root = path;
             Paths = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
-
-            ExchangeSetSanityChecks.ThrowIfNotExchangeSet(path, Paths);
         }
 
         public Stream OpenRead(string path)

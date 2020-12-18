@@ -39,6 +39,8 @@ namespace S63Checker
         {
             using (var source = SourceFactory(path))
             {
+                ExchangeSetSanityChecks.ThrowIfNotExchangeSet(source.Root, source.Paths);
+
                 return CheckSource(source);
             }
         }
@@ -257,6 +259,11 @@ namespace S63Checker
             if (Path.GetExtension(path).Equals(".iso", StringComparison.InvariantCultureIgnoreCase))
             {
                 return new IsoSource(path);
+            }
+
+            if (Path.GetExtension(path).Equals(".zip", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return new ZipSource(path);
             }
 
             return new FolderSource(path);
