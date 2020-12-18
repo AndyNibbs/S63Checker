@@ -197,10 +197,10 @@ namespace S63Checker
                 {
                     dsaCell.ImportParameters(new DSAParameters()
                     {
-                        P = dataServer.ParameterP,
-                        Q = dataServer.ParameterQ,
-                        G = dataServer.ParameterG,
-                        Y = dataServer.PublicKeyY
+                        P = dataServer.BigP,
+                        Q = dataServer.BigQ,
+                        G = dataServer.BigG,
+                        Y = dataServer.BigY
                     });
 
                     bool isgood = dsaCell.VerifySignature(fileHash, sig.SignatureR.Concat(sig.SignatureS).ToArray());
@@ -243,8 +243,7 @@ namespace S63Checker
         private bool XmlDataServersSignedBySA(XmlDataServer ds)
         {
             byte[] sig = ds.CertR.Concat(ds.CertS).ToArray();
-            
-            byte[] pubkey = MultiConcat(ds.ParameterP, ds.ParameterQ, ds.ParameterG, ds.PublicKeyY);
+            byte[] pubkey = ds.PublicKeyOfDSCert;
             
             byte[] pkHash = SHA1.ComputeHash(pubkey);
             
@@ -273,11 +272,6 @@ namespace S63Checker
         {
             if (detail == OutputDetail.Verbose)
                 Console.WriteLine(line);
-        }
-
-        private byte[] MultiConcat(byte[] a, byte[] b,byte[] c, byte[] d)
-        {
-            return a.Concat(b).Concat(c).Concat(d).ToArray();
         }
     }
 }
