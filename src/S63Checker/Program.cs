@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace S63Checker
             var detail = OutputDetail.Basic;
             try
             {
-                if (args.Length < 1 || HasFlag("?", args) || HasFlag("usage", args))
+                if (args.Length == 0 || (args.Length==1 && args[0].Equals("-?")))
                 {
                     return Usage();
                 }
@@ -100,6 +101,7 @@ namespace S63Checker
 
         static int Usage()
         {
+            Console.WriteLine();
             Console.WriteLine("S63Checker <path to exchange set folder | path to .iso> [-verbose] [-silent] [-?]");
             Console.WriteLine();
             Console.WriteLine("Don't use verbose and silent together -- if you do it'll be silent");
@@ -109,6 +111,8 @@ namespace S63Checker
             Console.WriteLine("1 signature check failed");
             Console.WriteLine("2 error occurred");
             Console.WriteLine("3 this was displayed");
+            Console.WriteLine();
+            Console.WriteLine($"Version {Assembly.GetExecutingAssembly().GetName().Version}");
             return 3;
         }
     }

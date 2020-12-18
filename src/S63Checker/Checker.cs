@@ -18,6 +18,9 @@ namespace S63Checker
 
         public Checker(string path, OutputDetail detail)
         {
+            if (!File.Exists("iho.crt"))
+                throw new FileNotFoundException("IHO.CRT not found alongside checker");
+
             var cert = new X509Certificate2("iho.crt");
             var now = DateTime.UtcNow;
             bool inDate = (now > cert.NotBefore && now < cert.NotAfter);
